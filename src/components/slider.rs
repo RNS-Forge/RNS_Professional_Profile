@@ -6,7 +6,7 @@ pub fn slider() -> Html {
         <div class={classes!("marquee-container", "select-none")}>
             <div class={classes!("marquee")}>
                 {"WANTED: OPPORTUNITIES IN AI & FULL STACK ENGINEERING — INQUIRE WITHIN — 2005sanjaynrs@gmail.com — "}
-                <a href="https://github.com/RNSsanjay" target="_blank">
+                <a href="https://github.com/RNS-Forge" target="_blank">
                     {"GitHub"}
                 </a>
                 {" & "}

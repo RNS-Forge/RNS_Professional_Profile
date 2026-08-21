@@ -38,7 +38,7 @@ pub fn news3() -> Html {
                         <p class={classes!("mt-1","mb-1")}><strong>{"🛠️ Tech Stack: Python, LangChain, CrewAI"}</strong></p>
                         <p class={classes!("mt-1","mb-1")}>{"Designed and published Agentium, a lightweight Python engine built to structure multi-agent communications and minimize integration overhead. Standardizing agent interfaces cut design and development time by 55%."}</p>
                         <p class={classes!("mt-2","mb-2")}>
-                            <a href="https://github.com/RNSsanjay">{" GitHub Repository [1]"}</a>
+                            <a href="https://github.com/RNS-Forge">{" GitHub Repository [1]"}</a>
                         </p>
                     </div>
                 </div>
@@ -53,7 +53,7 @@ pub fn news3() -> Html {
                         <p class={classes!("mt-1","mb-1")}><strong>{"🛠️ Tech Stack: Python, AutoGen, LangGraph"}</strong></p>
                         <p class={classes!("mt-1","mb-1")}>{"Developed an autonomous researcher dispatch tool utilizing layered agentic frameworks. Agents crawl database portals, validate paper relevance, summarize key findings, and output structured markdown digests. Research efficiency rose by 18%."}</p>
                         <p class={classes!("mt-2","mb-2")}>
-                            <a href="https://github.com/RNSsanjay">{" GitHub Repository [2]"}</a>
+                            <a href="https://github.com/RNS-Forge">{" GitHub Repository [2]"}</a>
                         </p>
 
                     </div>
@@ -74,7 +74,7 @@ pub fn news3() -> Html {
                         <p class={classes!("mt-1","mb-1")}><strong>{"🛠️ Tech Stack: Node.js, CrewAI, RESTful APIs"}</strong></p>
                         <p class={classes!("mt-1","mb-1")}>{"Engineered an automation layer integrating slack logs, calendar tasks, and incoming emails to autonomously coordinate schedules, project statuses, and updates. Lifted team-wide productivity benchmarks by 40%."}</p>
                         <p class={classes!("mt-2","mb-2")}>
-                            <a href="https://github.com/RNSsanjay">{" GitHub Repository [3]"}</a>
+                            <a href="https://github.com/RNS-Forge">{" GitHub Repository [3]"}</a>
                         </p>
                     </div>
                 </div>

@@ -18,7 +18,7 @@ pub fn footer() -> Html {
                 <div class={classes!("flex", "gap-2")}>
                     <a
                         class={classes!("hover:opacity-75", "transition-colors", "duration-300")}
-                        href="https://github.com/RNSsanjay"
+                        href="https://github.com/RNS-Forge"
                         target="_blank"
                     >
                         {"Github"}
