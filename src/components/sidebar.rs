@@ -1,8 +1,13 @@
 use yew::prelude::*;
 use stylist::style;
 
+#[derive(Properties, PartialEq)]
+pub struct SidebarProps {
+    pub on_play_puzzle: Callback<()>,
+}
+
 #[function_component(Sidebar)]
-pub fn sidebar() -> Html {
+pub fn sidebar(props: &SidebarProps) -> Html {
     let is_open = use_state(|| false);
     let show_nav = use_state(|| true);
     let last_scroll_y = use_state(|| 0.0);
@@ -180,9 +185,8 @@ pub fn sidebar() -> Html {
                                 toggle.emit(e);
                                 if let Some(window) = web_sys::window() {
                                     if let Some(doc) = window.document() {
-                                        if let Some(body) = doc.body() {
-                                            let height = body.scroll_height() as f64;
-                                            let _ = window.scroll_to_with_x_and_y(0.0, height * 0.2);
+                                        if let Some(elem) = doc.get_element_by_id("career-desk") {
+                                            elem.scroll_into_view();
                                         }
                                     }
                                 }
@@ -196,15 +200,14 @@ pub fn sidebar() -> Html {
                                 toggle.emit(e);
                                 if let Some(window) = web_sys::window() {
                                     if let Some(doc) = window.document() {
-                                        if let Some(body) = doc.body() {
-                                            let height = body.scroll_height() as f64;
-                                            let _ = window.scroll_to_with_x_and_y(0.0, height * 0.45);
+                                        if let Some(elem) = doc.get_element_by_id("projects-section") {
+                                            elem.scroll_into_view();
                                         }
                                     }
                                 }
                             })
                         }>
-                            {"III. The Lab Log"}
+                            {"III. Projects Supplement"}
                         </li>
                         <li class={nav_item_style.get_class_name().to_string()} onclick={
                             let toggle = toggle_sidebar.clone();
@@ -212,15 +215,55 @@ pub fn sidebar() -> Html {
                                 toggle.emit(e);
                                 if let Some(window) = web_sys::window() {
                                     if let Some(doc) = window.document() {
-                                        if let Some(body) = doc.body() {
-                                            let height = body.scroll_height() as f64;
-                                            let _ = window.scroll_to_with_x_and_y(0.0, height);
+                                        if let Some(elem) = doc.get_element_by_id("education-section") {
+                                            elem.scroll_into_view();
                                         }
                                     }
                                 }
                             })
                         }>
-                            {"IV. Classifieds & Contacts"}
+                            {"IV. Scholastic Ledger"}
+                        </li>
+                        <li class={nav_item_style.get_class_name().to_string()} onclick={
+                            let toggle = toggle_sidebar.clone();
+                            Callback::from(move |e| {
+                                toggle.emit(e);
+                                if let Some(window) = web_sys::window() {
+                                    if let Some(doc) = window.document() {
+                                        if let Some(elem) = doc.get_element_by_id("blog-section") {
+                                            elem.scroll_into_view();
+                                        }
+                                    }
+                                }
+                            })
+                        }>
+                            {"V. Gazette Blog"}
+                        </li>
+                        <li class={nav_item_style.get_class_name().to_string()} onclick={
+                            let toggle = toggle_sidebar.clone();
+                            Callback::from(move |e| {
+                                toggle.emit(e);
+                                if let Some(window) = web_sys::window() {
+                                    if let Some(doc) = window.document() {
+                                        if let Some(elem) = doc.get_element_by_id("contact-section") {
+                                            elem.scroll_into_view();
+                                        }
+                                    }
+                                }
+                            })
+                        }>
+                            {"VI. Classifieds & Contacts"}
+                        </li>
+                        <li class={nav_item_style.get_class_name().to_string()} onclick={
+                            let toggle = toggle_sidebar.clone();
+                            let play_puzzle = props.on_play_puzzle.clone();
+                            Callback::from(move |e| {
+                                gloo::console::log!("Sidebar: VII. Play Puzzle Edition Clicked!");
+                                play_puzzle.emit(());
+                                toggle.emit(e);
+                            })
+                        }>
+                            {"VII. Play Puzzle Edition"}
                         </li>
                     </ul>
                 </div>

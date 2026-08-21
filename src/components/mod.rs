@@ -8,3 +8,8 @@ pub mod slider;
 pub mod warning;
 pub mod footer;
 pub mod sidebar;
+pub mod education;
+pub mod projects_page;
+pub mod blog_page;
+pub mod contact_page;
+pub mod puzzle;
