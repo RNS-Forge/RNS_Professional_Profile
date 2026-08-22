@@ -20,27 +20,27 @@ html {
 
 @font-face {
   font-family: "OldLondon";
-  src: url("assets/fonts/OldLondon.ttf");
+  src: url("public/assets/fonts/OldLondon.ttf");
 }
 
 @font-face {
   font-family: "TimesNewRoman";
-  src: url("assets/fonts/times-new-roman.ttf");
+  src: url("public/assets/fonts/times-new-roman.ttf");
 }
 
 @font-face {
   font-family: "Impact";
-  src: url("assets/fonts/impact.ttf");
+  src: url("public/assets/fonts/impact.ttf");
 }
 
 @font-face {
   font-family: "Canopee";
-  src: url("assets/fonts/Canopee-regular.otf");
+  src: url("public/assets/fonts/Canopee-regular.otf");
 }
 
 @font-face {
   font-family: "EditorialNew";
-  src: url("assets/fonts/PPEditorialNew-Regular-BF644b214ff145f.otf");
+  src: url("public/assets/fonts/PPEditorialNew-Regular-BF644b214ff145f.otf");
 }
 
 @font-face {
@@ -135,7 +135,7 @@ h1 {
 
 /* Main screen layout */
 .animate {
-  background: url('bg/texture.jpg') !important;
+  background: url('public/bg/texture.jpg') !important;
   background-repeat: no-repeat;
   background-size: cover;
   max-width: 1400px;
