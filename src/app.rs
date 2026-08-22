@@ -1,4 +1,5 @@
 use yew::prelude::*;
+use wasm_bindgen::JsCast;
 use crate::components::{head::Head, middle_head::MiddleHead, top::Top, news::News, warning::Warning, footer::Footer, sidebar::Sidebar, puzzle::PuzzleGame, projects_archive::ProjectsArchive, newspaper_intro::NewspaperIntro};
 use crate::layouts::{screen::Screen};
 
@@ -29,6 +30,32 @@ pub fn App() -> Html {
             show_intro.set(false);
         })
     };
+
+    // Intersection Observer trigger to handle scroll-triggered newspaper transitions
+    {
+        let show_intro = show_intro.clone();
+        use_effect(move || {
+            if !*show_intro {
+                if let Some(window) = web_sys::window() {
+                    let js_code = r#"
+                        setTimeout(() => {
+                            const observer = new IntersectionObserver((entries) => {
+                                entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        entry.target.classList.add('reveal-active');
+                                    }
+                                });
+                            }, { rootMargin: '0px 0px -60px 0px', threshold: 0.05 });
+                            
+                            document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+                        }, 150);
+                    "#;
+                    let _ = js_sys::eval(js_code);
+                }
+            }
+            || ()
+        });
+    }
 
     html! {
         <div class="App">

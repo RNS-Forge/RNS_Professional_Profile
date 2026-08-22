@@ -22,23 +22,23 @@ pub struct NewsProps {
 pub fn news(props: &NewsProps) -> Html {
     html! {
         <>
-            <News1 />
+            <div class="scroll-reveal"><News1 /></div>
             <hr class={classes!("border-t-2", "border-zinc-800")} />
-            <MiddleHead />
+            <div class="scroll-reveal"><MiddleHead /></div>
             <hr class={classes!("border-t-2", "mb-6", "border-zinc-800")} />
-            <News2 />
+            <div class="scroll-reveal"><News2 /></div>
             <hr class={classes!("border-t-2", "my-6", "border-zinc-800")} />
-            <News4 />
+            <div class="scroll-reveal"><News4 /></div>
             <hr class={classes!("border-t-2", "my-6", "border-zinc-800")} />
-            <ProjectsPage on_view_archive={props.on_view_archive.clone()} />
+            <div class="scroll-reveal"><ProjectsPage on_view_archive={props.on_view_archive.clone()} /></div>
             <hr class={classes!("border-t-2", "my-6", "border-zinc-800")} />
-            <Education />
+            <div class="scroll-reveal"><Education /></div>
             <hr class={classes!("border-t-2", "my-6", "border-zinc-800")} />
-            <BlogPage />
+            <div class="scroll-reveal"><BlogPage /></div>
             <hr class={classes!("border-t-2", "my-6", "border-zinc-800")} />
-            <ContactPage />
+            <div class="scroll-reveal"><ContactPage /></div>
             <hr class={classes!("border-t-2", "my-4", "border-zinc-800")} />
-            <TheEnd />
+            <div class="scroll-reveal"><TheEnd /></div>
         </>
     }
 }
