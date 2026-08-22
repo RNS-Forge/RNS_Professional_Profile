@@ -10,8 +10,13 @@ struct ProjectItem {
     link: &'static str,
 }
 
+#[derive(Properties, PartialEq)]
+pub struct ProjectsPageProps {
+    pub on_view_archive: Callback<()>,
+}
+
 #[function_component(ProjectsPage)]
-pub fn projects_page() -> Html {
+pub fn projects_page(props: &ProjectsPageProps) -> Html {
     let container_style = style!(
         r#"
         margin: 2rem 0;
@@ -52,6 +57,26 @@ pub fn projects_page() -> Html {
         &:hover {
             transform: translateY(-4px);
             box-shadow: 6px 6px 0px rgba(185, 60, 18, 0.25);
+        }
+        "#
+    ).unwrap();
+
+    let view_more_btn_style = style!(
+        r#"
+        display: block;
+        margin: 1.5rem auto 0 auto;
+        border: 2px solid #18181b;
+        padding: 0.5rem 2rem;
+        background: transparent;
+        font-family: 'Times New Roman', serif;
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: uppercase;
+        box-shadow: 3px 3px 0px #18181b;
+        &:hover {
+            background: #B93C12;
+            color: #fff;
+            box-shadow: 3px 3px 0px #B93C12;
         }
         "#
     ).unwrap();
@@ -175,6 +200,13 @@ pub fn projects_page() -> Html {
                     }).collect::<Html>()
                 }
             </div>
+
+            <button 
+                onclick={let on_view = props.on_view_archive.clone(); Callback::from(move |_: MouseEvent| on_view.emit(()))}
+                class={view_more_btn_style.get_class_name().to_string()}
+            >
+                {"View Full Projects Archive"}
+            </button>
         </div>
     }
 }

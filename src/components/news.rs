@@ -13,8 +13,13 @@ use crate::components::contact_page::ContactPage;
 
 use crate::components::the_end::TheEnd;
 
+#[derive(Properties, PartialEq)]
+pub struct NewsProps {
+    pub on_view_archive: Callback<()>,
+}
+
 #[function_component(News)]
-pub fn news() -> Html {
+pub fn news(props: &NewsProps) -> Html {
     html! {
         <>
             <News1 />
@@ -25,7 +30,7 @@ pub fn news() -> Html {
             <hr class={classes!("border-t-2", "my-6", "border-zinc-800")} />
             <News4 />
             <hr class={classes!("border-t-2", "my-6", "border-zinc-800")} />
-            <ProjectsPage />
+            <ProjectsPage on_view_archive={props.on_view_archive.clone()} />
             <hr class={classes!("border-t-2", "my-6", "border-zinc-800")} />
             <Education />
             <hr class={classes!("border-t-2", "my-6", "border-zinc-800")} />

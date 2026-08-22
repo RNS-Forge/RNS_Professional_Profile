@@ -35,6 +35,38 @@ pub struct PuzzleProps {
     pub on_close: Callback<()>,
 }
 
+// Helper to calculate the coordinates path between start and end cells
+fn get_line_path(start: (usize, usize), end: (usize, usize)) -> Option<Vec<(usize, usize)>> {
+    let (sx, sy) = (start.0 as i32, start.1 as i32);
+    let (ex, ey) = (end.0 as i32, end.1 as i32);
+
+    let dx = ex - sx;
+    let dy = ey - sy;
+
+    let step_x = if dx == 0 { 0 } else { dx.signum() };
+    let step_y = if dy == 0 { 0 } else { dy.signum() };
+
+    // Check if horizontal, vertical, or 45-degree diagonal
+    let is_horizontal = dy == 0;
+    let is_vertical = dx == 0;
+    let is_diagonal = dx.abs() == dy.abs();
+
+    if !is_horizontal && !is_vertical && !is_diagonal {
+        return None;
+    }
+
+    let steps = std::cmp::max(dx.abs(), dy.abs()) as usize;
+    let mut path = Vec::new();
+    for i in 0..=steps {
+        let cx = sx + step_x * i as i32;
+        let cy = sy + step_y * i as i32;
+        if cx >= 0 && cx < 10 && cy >= 0 && cy < 10 {
+            path.push((cx as usize, cy as usize));
+        }
+    }
+    Some(path)
+}
+
 #[function_component(PuzzleGame)]
 pub fn puzzle_game(props: &PuzzleProps) -> Html {
     let container_style = style!(
@@ -95,10 +127,13 @@ pub fn puzzle_game(props: &PuzzleProps) -> Html {
         r#"
         display: flex;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 1.5rem;
         justify-content: center;
         margin: 1rem 0;
         max-width: 600px;
+        padding: 1rem;
+        border: 2px double #18181b;
+        background: rgba(24, 24, 27, 0.02);
         "#
     ).unwrap();
 
@@ -130,10 +165,11 @@ pub fn puzzle_game(props: &PuzzleProps) -> Html {
         "#
     ).unwrap();
 
-    // Game State
+    // Game States
     let grid = use_state(|| vec![vec![' '; 10]; 10]);
     let placed_words = use_state(|| Vec::<PlacedWord>::new());
     let selected_start = use_state(|| Option::<(usize, usize)>::None);
+    let hovered_cell = use_state(|| Option::<(usize, usize)>::None);
     let win_state = use_state(|| false);
     let initialized = use_state(|| false);
 
@@ -142,37 +178,49 @@ pub fn puzzle_game(props: &PuzzleProps) -> Html {
         let grid = grid.clone();
         let placed_words = placed_words.clone();
         let selected_start = selected_start.clone();
+        let hovered_cell = hovered_cell.clone();
         let win_state = win_state.clone();
 
         Callback::from(move |_| {
             selected_start.set(None);
+            hovered_cell.set(None);
             win_state.set(false);
 
-            let mut rand = SimpleRand::new(js_sys::Date::now() as u32);
+            let mut rand = SimpleRand::new((js_sys::Date::now() % 4294967295.0) as u32);
             
-            let all_pool = vec![
-                "PYTHON", "YEW", "RUST", "AGENT", "DEVELOPER", "BUREAU", "DISPATCH", "TELEGRAM", "ENGINEER"
+            let mut all_pool = vec![
+                "PYTHON", "YEW", "RUST", "AGENT", "DEVELOPER", "BUREAU", "DISPATCH", "TELEGRAM", "ENGINEER",
+                "FULLSTACK", "PORTFOLIO", "LOGISTICS", "DATABASE", "INTEGRATION", "MODEL"
             ];
             
-            // Highlight colors matching reference images
+            // Shuffle pool using Fisher-Yates
+            let n = all_pool.len();
+            for i in (1..n).rev() {
+                let j = rand.next_range(0, i);
+                all_pool.swap(i, j);
+            }
+            
+            // Select first 7 words for the round
+            let active_pool: Vec<&str> = all_pool.into_iter().take(7).collect();
+            
             let colors = vec![
-                "rgba(239, 68, 68, 0.3)",   // Red
-                "rgba(59, 130, 246, 0.3)",  // Blue
-                "rgba(16, 185, 129, 0.3)",  // Green
-                "rgba(139, 92, 246, 0.3)",  // Purple
-                "rgba(236, 72, 153, 0.3)",  // Pink
-                "rgba(245, 158, 11, 0.3)"   // Amber
+                "rgba(239, 68, 68, 0.35)",  // Red
+                "rgba(59, 130, 246, 0.35)",  // Blue
+                "rgba(16, 185, 129, 0.35)",  // Green
+                "rgba(139, 92, 246, 0.35)",  // Purple
+                "rgba(236, 72, 153, 0.35)",  // Pink
+                "rgba(245, 158, 11, 0.35)"   // Amber
             ];
 
             let mut temp_grid = vec![vec!['.'; 10]; 10];
             let mut temp_placed = Vec::<PlacedWord>::new();
 
-            for (idx, word_str) in all_pool.iter().enumerate() {
+            for (idx, word_str) in active_pool.iter().enumerate() {
                 let word_len = word_str.len();
                 let mut placed = false;
                 let color = colors[idx % colors.len()];
 
-                for _ in 0..100 {
+                for _ in 0..150 {
                     if placed { break; }
                     let dir_x: i32 = rand.next_range(0, 2) as i32 - 1; // -1, 0, 1
                     let dir_y: i32 = rand.next_range(0, 2) as i32 - 1;
@@ -181,13 +229,11 @@ pub fn puzzle_game(props: &PuzzleProps) -> Html {
                     let start_x = rand.next_range(0, 9);
                     let start_y = rand.next_range(0, 9);
 
-                    // Check boundaries
                     let end_x = start_x as i32 + dir_x * (word_len as i32 - 1);
                     let end_y = start_y as i32 + dir_y * (word_len as i32 - 1);
 
                     if end_x < 0 || end_x >= 10 || end_y < 0 || end_y >= 10 { continue; }
 
-                    // Check collision
                     let mut conflict = false;
                     let mut coords = Vec::<(usize, usize)>::new();
                     for i in 0..word_len {
@@ -247,62 +293,90 @@ pub fn puzzle_game(props: &PuzzleProps) -> Html {
         });
     }
 
+    // Current Highlighted Selection Path
+    let active_path = {
+        let selected_start = selected_start.clone();
+        let hovered_cell = hovered_cell.clone();
+        
+        match (*selected_start, *hovered_cell) {
+            (Some(start), Some(hovered)) => get_line_path(start, hovered).unwrap_or_default(),
+            _ => Vec::new(),
+        }
+    };
+
+    // Cell Hover Handler
+    let on_cell_hover = {
+        let hovered_cell = hovered_cell.clone();
+        Callback::from(move |coords: (usize, usize)| {
+            hovered_cell.set(Some(coords));
+        })
+    };
+
     // Cell Click Handler
     let on_cell_click = {
         let selected_start = selected_start.clone();
+        let hovered_cell = hovered_cell.clone();
         let placed_words = placed_words.clone();
         let win_state = win_state.clone();
+        let grid = grid.clone();
 
         Callback::from(move |(x, y): (usize, usize)| {
             match *selected_start {
                 None => {
                     selected_start.set(Some((x, y)));
+                    hovered_cell.set(Some((x, y)));
                 }
-                Some((sx, sy)) => {
-                    // Check if selections match any placed words
-                    let mut temp_placed = (*placed_words).clone();
-                    let mut found_any = false;
+                Some(start) => {
+                    // Get selection path coords
+                    if let Some(path) = get_line_path(start, (x, y)) {
+                        // Extract letters spelled by selection path
+                        let selected_word: String = path.iter().map(|&(cx, cy)| grid[cy][cx]).collect();
+                        let reversed_word: String = selected_word.chars().rev().collect();
 
-                    for pw in temp_placed.iter_mut() {
-                        if pw.found { continue; }
-                        // Verify coordinates match forward or reverse
-                        let matches_forward = pw.coords.first() == Some(&(sx, sy)) && pw.coords.last() == Some(&(x, y));
-                        let matches_reverse = pw.coords.last() == Some(&(sx, sy)) && pw.coords.first() == Some(&(x, y));
+                        let mut temp_placed = (*placed_words).clone();
+                        let mut matched = false;
 
-                        if matches_forward || matches_reverse {
-                            pw.found = true;
-                            found_any = true;
-                            break;
+                        for pw in temp_placed.iter_mut() {
+                            if pw.found { continue; }
+                            if pw.word == selected_word || pw.word == reversed_word {
+                                pw.found = true;
+                                matched = true;
+                                break;
+                            }
                         }
-                    }
 
-                    if found_any {
-                        placed_words.set(temp_placed.clone());
-                        // Check win condition
-                        let all_found = temp_placed.iter().all(|pw| pw.found);
-                        if all_found {
-                            win_state.set(true);
+                        if matched {
+                            placed_words.set(temp_placed.clone());
+                            let all_found = temp_placed.iter().all(|pw| pw.found);
+                            if all_found {
+                                win_state.set(true);
+                            }
                         }
                     }
 
                     selected_start.set(None);
+                    hovered_cell.set(None);
                 }
             }
         })
     };
 
-    // Color cell backgrounds if they are part of a found word or currently selected
+    // Color cell backgrounds depending on selection / matches
     let get_cell_bg = {
         let selected_start = selected_start.clone();
         let placed_words = placed_words.clone();
+        let active_path = active_path.clone();
         
         move |x: usize, y: usize| -> String {
-            // If currently selected start cell
+            // Check if cell is in the currently selected path
+            if active_path.contains(&(x, y)) {
+                return "background: #fef08a; border: 1px solid #B93C12;".to_string(); // Light yellow selection preview
+            }
             if Some((x, y)) == *selected_start {
-                return "background: #fde047;".to_string(); // Bright yellow
+                return "background: #fde047; border: 1px solid #B93C12;".to_string(); // Bold yellow start cell
             }
 
-            // Check if part of any found word
+            // Check if cell is part of any permanently found words
             for pw in (*placed_words).iter() {
                 if pw.found && pw.coords.contains(&(x, y)) {
                     return format!("background: {};", pw.color);
@@ -323,18 +397,19 @@ pub fn puzzle_game(props: &PuzzleProps) -> Html {
                     {"Find the hidden keywords from the newspaper edition below."}
                 </p>
                 <p style="font-size: 0.9rem; color: #71717a; margin-top: 0.5rem;">
-                    {"Instructions: Click the start letter cell, then click the end letter cell to submit a word."}
+                    {"Instructions: Click the start letter cell, hover to spell, then click the end letter cell to confirm."}
                 </p>
             </div>
 
-            // Target words
+            // Target words checklist
             <div class={word_list_style.get_class_name().to_string()}>
                 {
                     (*placed_words).iter().map(|pw| {
-                        let text_decoration = if pw.found { "line-through; color: #71717a; opacity: 0.5;" } else { "none;" };
+                        let text_decoration = if pw.found { "line-through; color: #16a34a; opacity: 0.65;" } else { "none;" };
+                        let marker = if pw.found { "✓ " } else { "☐ " };
                         html! {
                             <span style={format!("font-size: 1.15rem; font-weight: bold; text-transform: uppercase; font-family: 'Courier New', monospace; text-decoration: {}", text_decoration)}>
-                                { &pw.word }
+                                { marker }{ &pw.word }
                             </span>
                         }
                     }).collect::<Html>()
@@ -359,10 +434,12 @@ pub fn puzzle_game(props: &PuzzleProps) -> Html {
                     (*grid).iter().enumerate().map(|(y, row)| {
                         row.iter().enumerate().map(|(x, &letter)| {
                             let click_handler = on_cell_click.clone();
+                            let hover_handler = on_cell_hover.clone();
                             let bg = get_cell_bg(x, y);
                             html! {
                                 <div 
                                     onclick={Callback::from(move |_| click_handler.emit((x, y)))}
+                                    onmouseenter={Callback::from(move |_| hover_handler.emit((x, y)))}
                                     class={cell_style.get_class_name().to_string()} 
                                     style={bg}
                                 >

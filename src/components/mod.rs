@@ -13,3 +13,4 @@ pub mod projects_page;
 pub mod blog_page;
 pub mod contact_page;
 pub mod puzzle;
+pub mod projects_archive;
