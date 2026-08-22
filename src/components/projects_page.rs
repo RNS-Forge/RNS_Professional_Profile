@@ -122,7 +122,7 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
             subtitle: "Agentic Multi-Agent Framework",
             tech: "Python, LangChain, CrewAI",
             desc: "Designed and published a modular python library for structuring complex agent communications and automating business workflows. Cuts pipeline setup by 55%.",
-            img: "/public/IMG/UIComponent.png",
+            img: "public/IMG/UIComponent.png",
             link: "https://github.com/RNS-Forge",
         },
         ProjectItem {
@@ -130,7 +130,7 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
             subtitle: "Autonomous Research Dispatcher",
             tech: "Python, AutoGen, LangGraph",
             desc: "An intelligent autonomous literature crawler that searches publications, filters relevant research papers, and structures research reviews by 18% higher speed.",
-            img: "/public/IMG/blog.png",
+            img: "public/IMG/blog.png",
             link: "https://github.com/RNS-Forge",
         },
         ProjectItem {
@@ -138,7 +138,7 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
             subtitle: "Responsive Media Player Interface",
             tech: "HTML, CSS, Web API, JS",
             desc: "Replicates high-fidelity Spotify desktop designs and dynamic search queries, integrating client audio playback loops and custom visual sliders.",
-            img: "/public/IMG/spotify.png",
+            img: "public/IMG/spotify.png",
             link: "https://github.com/RNS-Forge",
         },
         ProjectItem {
@@ -146,7 +146,7 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
             subtitle: "Academic Evaluation Tool",
             tech: "Python, PyTorch, LangChain",
             desc: "Parses handwritten exam sheets, extracts answers using computer vision, and runs analysis against strict rubrics to cut manual grading time by 30%.",
-            img: "/public/IMG/scholarship.png",
+            img: "public/IMG/scholarship.png",
             link: "https://github.com/RNS-Forge",
         },
         ProjectItem {
@@ -154,7 +154,7 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
             subtitle: "Job Search Portal & Tracker",
             tech: "Node.js, React, Express, MongoDB",
             desc: "Coordinates student profiles and schedules recruiter rounds, displaying success analytics metrics and automated email dispatch templates.",
-            img: "/public/IMG/placement.png",
+            img: "public/IMG/placement.png",
             link: "https://github.com/RNS-Forge",
         },
     ];

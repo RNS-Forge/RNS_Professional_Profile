@@ -30,7 +30,7 @@ pub fn top() -> Html {
                 <span class={classes!("text-black/75", "text-base", "font-semibold", "cursor-pointer")}>
                     { "GitHub Profile: " }<a href="https://github.com/RNS-Forge" target="_blank" class={classes!("hover:text-themeOrange","hover:underline")}>{"RNS-Forge"}</a>
                     <span style="margin: 0 0.5rem; color: #B93C12; font-weight: bold;">{"•"}</span>
-                    <a href="/public/RNS_Sanjay_Developer_ATS_Resume.pdf" download="RNS_Sanjay_Developer_ATS_Resume.pdf" class={classes!("hover:text-themeOrange","hover:underline")}>{"[ Download Resume ]"}</a>
+                    <a href="public/RNS_Sanjay_Developer_ATS_Resume.pdf" download="RNS_Sanjay_Developer_ATS_Resume.pdf" class={classes!("hover:text-themeOrange","hover:underline")}>{"[ Download Resume ]"}</a>
                 </span>
             </div>
             <div class={classes!("flex", "flex-col", "items-end")}>

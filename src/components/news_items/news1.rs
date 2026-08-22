@@ -89,7 +89,7 @@ pub fn news1() -> Html {
 
             // Right Column with image and two text blocks
             <div class={classes!("flex", "flex-col", "gap-4", "basis-1/2")}>
-                <img src="/public/IMG/Main%20img.png" style="height: 580px; object-fit: cover;" />
+                <img src="public/IMG/Main%20img.png" style="height: 580px; object-fit: cover;" />
             </div>
         </div>
     }

@@ -51,7 +51,7 @@ pub fn sidebar(props: &SidebarProps) -> Html {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: url('/public/bg/texture.jpg') !important;
+        background: url('public/bg/texture.jpg') !important;
         background-repeat: no-repeat;
         background-size: cover;
         border-bottom: 4px double #18181b;
@@ -87,7 +87,7 @@ pub fn sidebar(props: &SidebarProps) -> Html {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: url('/public/bg/texture.jpg') !important;
+        background: url('public/bg/texture.jpg') !important;
         background-repeat: no-repeat;
         background-size: cover;
         color: #18181b;
