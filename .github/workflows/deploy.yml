@@ -32,7 +32,7 @@ jobs:
           mv trunk /usr/local/bin/
 
       - name: Build with Trunk
-        run: trunk build --release --public-url "/RNS_Professional_Profile/"
+        run: trunk build --release --public-url "/"
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
