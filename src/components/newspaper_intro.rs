@@ -103,7 +103,7 @@ pub fn newspaper_intro(props: &IntroProps) -> Html {
         <div class={container_style.get_class_name().to_string()}>
             <video 
                 ref={video_ref}
-                src="/public/Intro.mp4"
+                src="public/Intro.mp4"
                 autoplay=true
                 muted=true
                 playsinline=true

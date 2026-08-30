@@ -37,9 +37,9 @@ pub fn news5() -> Html {
                         <p class={classes!("mt-1","mb-1")}><span class="high">{"E"}</span>{"valuation workflows optimized using agentic vision models."}</p>
                         <p class={classes!("mt-1","mb-1")}><strong>{"🛠️ Tech Stack: Python, PyTorch, LangChain"}</strong></p>
                         <p class={classes!("mt-1","mb-1")}>{"Developed an automated solution to digitize, parse, and score physical exam scripts. This AI pipeline extracted written answers, cross-referenced grading rubrics, and reduced standard evaluation time by 30%."}</p>
-                        <p class={classes!("mt-2","mb-2")}>
-                            <a href="https://github.com/RNS-Forge">{" GitHub Repository [4]"}</a>
-                        </p>
+                         <p class={classes!("mt-2","mb-2")}>
+                            <a href="https://github.com/RNS-Forge/RNS_Exam-Papper-Analyzer" target="_blank">{" GitHub Repository [4]"}</a>
+                         </p>
                     </div>
                 </div>
             </div>

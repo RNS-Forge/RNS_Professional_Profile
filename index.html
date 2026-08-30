@@ -7,7 +7,13 @@
         <link rel="rust" data-trunk />
         <link data-trunk rel="copy-dir" href="/public" />
         <link data-trunk rel="css"  href="/public/styles.css">
-        <link rel="stylesheet" type="css" href="./public/styles.css">
+        <script>
+            const originalWarn = console.warn;
+            console.warn = (...args) => {
+                if (args[0] && typeof args[0] === 'string' && args[0].includes('tailwindcss.com')) return;
+                originalWarn(...args);
+            };
+        </script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
       // tailwind.config.js

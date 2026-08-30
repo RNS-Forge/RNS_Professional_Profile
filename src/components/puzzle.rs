@@ -76,7 +76,7 @@ pub fn puzzle_game(props: &PuzzleProps) -> Html {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: url('/public/bg/texture.jpg') !important;
+        background: url('public/bg/texture.jpg') !important;
         background-repeat: no-repeat;
         background-size: cover;
         z-index: 300;
