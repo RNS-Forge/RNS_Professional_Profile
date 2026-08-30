@@ -270,7 +270,7 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
             subtitle: "Security Automation Scanner",
             tech: "TypeScript, OWASP API, security",
             desc: "Dynamic penetration scanner mimicking cybersecurity attack scripts, scanning REST endpoints for injection flaws, and reporting CVE fixes.",
-            img: "public/projects/Agentium.png",
+            img: "public/projects/APIPentesting.jpg",
             link: "https://github.com/RNS-Forge/Automated-AI-powered-API-Pentesting",
         },
         ProjectItem {
@@ -278,8 +278,16 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
             subtitle: "Academic Evaluation Tool",
             tech: "JavaScript, Vision APIs, PyTorch",
             desc: "Parses handwritten exam sheets, extracts answers using computer vision, and runs analysis against strict rubrics to cut manual grading time by 30%.",
-            img: "public/IMG/blog.png",
+            img: "public/projects/ExamPaperAnalyzer.jpg",
             link: "https://github.com/RNS-Forge/RNS_Exam-Papper-Analyzer",
+        },
+        ProjectItem {
+            title: "Agentium Engine",
+            subtitle: "Agentic Multi-Agent Framework",
+            tech: "Python, LangChain, CrewAI",
+            desc: "Designed and published a modular python library for structuring complex agent communications and automating business workflows. Cuts pipeline setup by 55%.",
+            img: "public/projects/Agentium.png",
+            link: "https://pypi.org/project/agentium/",
         },
     ];
 

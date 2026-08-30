@@ -92,6 +92,13 @@ pub fn projects_archive(props: &ArchiveProps) -> Html {
 
     let projects = vec![
         ArchiveProject {
+            title: "Agentium Engine",
+            subtitle: "Agentic Multi-Agent Framework",
+            tech: "Python, LangChain, CrewAI",
+            desc: "Designed and published a modular python library for structuring complex agent communications and automating business workflows. Cuts pipeline setup by 55%.",
+            link: "https://pypi.org/project/agentium/",
+        },
+        ArchiveProject {
             title: "Agentic Code Generator",
             subtitle: "Autonomous AI Code Builder",
             tech: "HTML, Tailwind CSS, JavaScript",
