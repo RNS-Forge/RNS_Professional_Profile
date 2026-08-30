@@ -42,7 +42,7 @@ pub fn news4() -> Html {
                     <div>
                         <h1 style="font-size: 2rem;">
                             <a href="https://www.axodian.com/" target="_blank" style="color: #B93C12; text-decoration: underline;">{"AXODIAN"}</a>
-                            {" APPOINTS FULL STACK DEVELOPER FOR GLOBAL TRADE TECH PLATFORMS"}
+                            {" APPOINTS SOFTWARE ENGINEER FOR GLOBAL TRADE TECH PLATFORMS"}
                         </h1>
                     </div>
 
@@ -53,7 +53,7 @@ pub fn news4() -> Html {
                             {" required advanced full stack infrastructure to support global trade pipelines."}
                         </p>
                         <p>
-                            {"Since "}<strong>{"June 2026 to Present"}</strong>{", Sanjay N serves as a "}<strong>{"Full Stack Developer"}</strong>{", exploring technologies and optimizing systems related to international export and import procedures."}
+                            {"Since "}<strong>{"June 2026 to Present"}</strong>{", Sanjay N serves as a "}<strong>{"Software Engineer"}</strong>{", exploring technologies and optimizing systems related to international export and import procedures."}
                         </p>
                         <p>
                             {"He builds and maintains web applications, implements secure backend endpoints, and integrates trade logistics telemetry tracking systems to streamline operational compliance."}
