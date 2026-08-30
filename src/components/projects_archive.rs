@@ -60,6 +60,9 @@ pub fn projects_archive(props: &ArchiveProps) -> Html {
         min-height: 200px;
         box-shadow: 4px 4px 0px rgba(24, 24, 27, 0.1);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
         &:hover {
             transform: translateY(-3px);
             box-shadow: 6px 6px 0px rgba(185, 60, 18, 0.25);
@@ -89,46 +92,46 @@ pub fn projects_archive(props: &ArchiveProps) -> Html {
 
     let projects = vec![
         ArchiveProject {
-            title: "Agentium Engine",
-            subtitle: "Agentic Multi-Agent Framework",
-            tech: "Python, LangChain, CrewAI",
-            desc: "Designed and published a modular python library for structuring complex agent communications and automating business workflows. Cuts pipeline setup by 55%.",
-            link: "https://github.com/RNS-Forge",
+            title: "Agentic Code Generator",
+            subtitle: "Autonomous AI Code Builder",
+            tech: "HTML, Tailwind CSS, JavaScript",
+            desc: "An interactive developer workbench generating clean, semantic HTML templates on demand, leveraging AI models to accelerate layout prototyping.",
+            link: "https://github.com/RNS-Forge/Agentic-Code-Generator",
         },
         ArchiveProject {
-            title: "Researcher AgentX",
-            subtitle: "Autonomous Research Dispatcher",
-            tech: "Python, AutoGen, LangGraph",
-            desc: "An intelligent autonomous literature crawler that searches publications, filters relevant research papers, and structures research reviews by 18% higher speed.",
-            link: "https://github.com/RNS-Forge",
+            title: "AgriBridge AI",
+            subtitle: "Smart Agriculture Telemetry",
+            tech: "TypeScript, React, Node.js",
+            desc: "An enterprise agricultural supply-chain and telemetry portal connecting smallholder farmers with export networks, ensuring instant payout validation.",
+            link: "https://github.com/RNS-Forge/AgriBridge-AI",
         },
         ArchiveProject {
-            title: "Audioscape: Spotify App",
-            subtitle: "Responsive Media Player Interface",
-            tech: "HTML, CSS, Web API, JS",
-            desc: "Replicates high-fidelity Spotify desktop designs and dynamic search queries, integrating client audio playback loops and custom visual sliders.",
-            link: "https://github.com/RNS-Forge",
+            title: "AI-Based Market Research Analyst",
+            subtitle: "Market Intelligence Agent",
+            tech: "JavaScript, Node.js, LLMs",
+            desc: "An autonomous research agent parsing keyword volumes, scraping competitor directories, and outputting targeted audience reports.",
+            link: "https://github.com/RNS-Forge/AI-Based-Market-Research-Analyst",
         },
         ArchiveProject {
-            title: "AI Exam Paper Analyzer",
+            title: "Automated AI-powered API Pentesting",
+            subtitle: "Security Automation Scanner",
+            tech: "TypeScript, OWASP API, security",
+            desc: "Dynamic penetration scanner mimicking cybersecurity attack scripts, scanning REST endpoints for injection flaws, and reporting CVE fixes.",
+            link: "https://github.com/RNS-Forge/Automated-AI-powered-API-Pentesting",
+        },
+        ArchiveProject {
+            title: "RNS Exam Paper Analyzer",
             subtitle: "Academic Evaluation Tool",
-            tech: "Python, PyTorch, LangChain",
+            tech: "JavaScript, Vision APIs, PyTorch",
             desc: "Parses handwritten exam sheets, extracts answers using computer vision, and runs analysis against strict rubrics to cut manual grading time by 30%.",
-            link: "https://github.com/RNS-Forge",
-        },
-        ArchiveProject {
-            title: "Corporate Placement HUB",
-            subtitle: "Job Search Portal & Tracker",
-            tech: "Node.js, React, Express, MongoDB",
-            desc: "Coordinates student profiles and schedules recruiter rounds, displaying success analytics metrics and automated email dispatch templates.",
-            link: "https://github.com/RNS-Forge",
+            link: "https://github.com/RNS-Forge/RNS_Exam-Papper-Analyzer",
         },
         ArchiveProject {
             title: "Smart Agritech Telemetry",
             subtitle: "IOT ML Yield Forecast Engine",
             tech: "Python, scikit-learn, FastAPI",
             desc: "An IoT dashboard integrating remote soil humidity sensor data streams with ML forecasting models to predict harvest yield dates with 92% reliability.",
-            link: "https://github.com/RNS-Forge",
+            link: "https://github.com/RNS-Forge/AgriBridge-AI",
         },
         ArchiveProject {
             title: "OmniSearch vectorDB",
@@ -175,7 +178,7 @@ pub fn projects_archive(props: &ArchiveProps) -> Html {
                 {
                     projects.into_iter().map(|p| {
                         html! {
-                            <div class={card_style.get_class_name().to_string()}>
+                            <a href={p.link} target="_blank" class={card_style.get_class_name().to_string()}>
                                 <div style="display: flex; flex-direction: column; gap: 0.35rem;">
                                     <span style="font-size: 0.7rem; text-transform: uppercase; font-weight: bold; color: #B93C12;">
                                         {p.subtitle}
@@ -191,11 +194,11 @@ pub fn projects_archive(props: &ArchiveProps) -> Html {
                                     </p>
                                 </div>
                                 <div style="margin-top: 1rem; border-top: 1px dashed rgba(24, 24, 27, 0.25); padding-top: 0.5rem; text-align: right;">
-                                    <a href={p.link} target="_blank" style="font-size: 0.85rem; font-weight: bold; color: #B93C12; text-decoration: underline;">
+                                    <span style="font-size: 0.85rem; font-weight: bold; color: #B93C12; text-decoration: underline;">
                                         {"Inspect Repository →"}
-                                    </a>
+                                    </span>
                                 </div>
-                            </div>
+                            </a>
                         }
                     }).collect::<Html>()
                 }

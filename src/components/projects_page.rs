@@ -57,6 +57,9 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
         padding: 1rem;
         box-shadow: 4px 4px 0px rgba(24, 24, 27, 0.1);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
         &:hover {
             transform: translateY(-4px);
             box-shadow: 6px 6px 0px rgba(185, 60, 18, 0.25);
@@ -95,6 +98,7 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
                 let is_dragging = std::rc::Rc::new(std::cell::Cell::new(false));
                 let start_x = std::rc::Rc::new(std::cell::Cell::new(0.0));
                 let start_scroll = std::rc::Rc::new(std::cell::Cell::new(0));
+                let is_pointer_down = std::rc::Rc::new(std::cell::Cell::new(false));
                 let mut cleanup_interval = None;
 
                 if let Some(elem) = container_ref.cast::<web_sys::HtmlElement>() {
@@ -107,6 +111,7 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
 
                     // Pointer Down (captures both mouse drag and touch swipe)
                     {
+                        let is_pointer_down = is_pointer_down.clone();
                         let is_dragging = is_dragging.clone();
                         let start_x = start_x.clone();
                         let start_scroll = start_scroll.clone();
@@ -114,14 +119,11 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
                         let update_interaction = update_interaction.clone();
                         let listener = gloo::events::EventListener::new(&elem, "pointerdown", move |event| {
                             if let Some(pe) = event.dyn_ref::<web_sys::PointerEvent>() {
-                                is_dragging.set(true);
+                                is_pointer_down.set(true);
+                                is_dragging.set(false);
                                 start_x.set(pe.client_x() as f64);
                                 start_scroll.set(elem_for_closure.scroll_left());
                                 update_interaction();
-                                
-                                let _ = elem_for_closure.style().set_property("cursor", "grabbing");
-                                let _ = elem_for_closure.style().set_property("user-select", "none");
-                                let _ = elem_for_closure.set_pointer_capture(pe.pointer_id());
                             }
                         });
                         listeners.push(listener);
@@ -129,18 +131,29 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
 
                     // Pointer Move (drags the container)
                     {
+                        let is_pointer_down = is_pointer_down.clone();
                         let is_dragging = is_dragging.clone();
                         let start_x = start_x.clone();
                         let start_scroll = start_scroll.clone();
                         let elem_for_closure = elem.clone();
                         let update_interaction = update_interaction.clone();
                         let listener = gloo::events::EventListener::new(&elem, "pointermove", move |event| {
-                            if is_dragging.get() {
+                            if is_pointer_down.get() {
                                 if let Some(pe) = event.dyn_ref::<web_sys::PointerEvent>() {
                                     let current_x = pe.client_x() as f64;
                                     let dx = current_x - start_x.get();
-                                    elem_for_closure.set_scroll_left(start_scroll.get() - dx as i32);
-                                    update_interaction();
+                                    
+                                    if !is_dragging.get() && dx.abs() > 5.0 {
+                                        is_dragging.set(true);
+                                        let _ = elem_for_closure.style().set_property("cursor", "grabbing");
+                                        let _ = elem_for_closure.style().set_property("user-select", "none");
+                                        let _ = elem_for_closure.set_pointer_capture(pe.pointer_id());
+                                    }
+                                    
+                                    if is_dragging.get() {
+                                        elem_for_closure.set_scroll_left(start_scroll.get() - dx as i32);
+                                        update_interaction();
+                                    }
                                 }
                             }
                         });
@@ -149,16 +162,20 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
 
                     // Pointer Up / Cancel / Leave
                     {
+                        let is_pointer_down = is_pointer_down.clone();
                         let is_dragging = is_dragging.clone();
                         let elem_for_closure = elem.clone();
                         let update_interaction = update_interaction.clone();
                         let end_drag = move |event: &web_sys::Event| {
-                            if is_dragging.get() {
-                                is_dragging.set(false);
-                                let _ = elem_for_closure.style().remove_property("cursor");
-                                let _ = elem_for_closure.style().remove_property("user-select");
-                                if let Some(pe) = event.dyn_ref::<web_sys::PointerEvent>() {
-                                    let _ = elem_for_closure.release_pointer_capture(pe.pointer_id());
+                            if is_pointer_down.get() {
+                                is_pointer_down.set(false);
+                                if is_dragging.get() {
+                                    is_dragging.set(false);
+                                    let _ = elem_for_closure.style().remove_property("cursor");
+                                    let _ = elem_for_closure.style().remove_property("user-select");
+                                    if let Some(pe) = event.dyn_ref::<web_sys::PointerEvent>() {
+                                        let _ = elem_for_closure.release_pointer_capture(pe.pointer_id());
+                                    }
                                 }
                                 update_interaction();
                             }
@@ -225,44 +242,44 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
 
     let projects = vec![
         ProjectItem {
-            title: "Agentium Engine",
-            subtitle: "Agentic Multi-Agent Framework",
-            tech: "Python, LangChain, CrewAI",
-            desc: "Designed and published a modular python library for structuring complex agent communications and automating business workflows. Cuts pipeline setup by 55%.",
-            img: "public/IMG/UIComponent.png",
-            link: "https://github.com/RNS-Forge",
+            title: "Agentic Code Generator",
+            subtitle: "Autonomous AI Code Builder",
+            tech: "HTML, Tailwind CSS, JavaScript",
+            desc: "An interactive developer workbench generating clean, semantic HTML templates on demand, leveraging AI models to accelerate layout prototyping.",
+            img: "public/projects/AgenticCodeGenerator.jpg",
+            link: "https://github.com/RNS-Forge/Agentic-Code-Generator",
         },
         ProjectItem {
-            title: "Researcher AgentX",
-            subtitle: "Autonomous Research Dispatcher",
-            tech: "Python, AutoGen, LangGraph",
-            desc: "An intelligent autonomous literature crawler that searches publications, filters relevant research papers, and structures research reviews by 18% higher speed.",
-            img: "public/IMG/blog.png",
-            link: "https://github.com/RNS-Forge",
+            title: "AgriBridge AI",
+            subtitle: "Smart Agriculture Telemetry",
+            tech: "TypeScript, React, Node.js",
+            desc: "An enterprise agricultural supply-chain and telemetry portal connecting smallholder farmers with export networks, ensuring instant payout validation.",
+            img: "public/projects/AgriBridgeAI.jpg",
+            link: "https://github.com/RNS-Forge/AgriBridge-AI",
         },
         ProjectItem {
-            title: "Audioscape: Spotify App",
-            subtitle: "Responsive Media Player Interface",
-            tech: "HTML, CSS, Web API, JS",
-            desc: "Replicates high-fidelity Spotify desktop designs and dynamic search queries, integrating client audio playback loops and custom visual sliders.",
-            img: "public/IMG/spotify.png",
-            link: "https://github.com/RNS-Forge",
+            title: "AI-Based Market Research Analyst",
+            subtitle: "Market Intelligence Agent",
+            tech: "JavaScript, Node.js, LLMs",
+            desc: "An autonomous research agent parsing keyword volumes, scraping competitor directories, and outputting targeted audience reports.",
+            img: "public/projects/MarketResearchAnalyst.jpg",
+            link: "https://github.com/RNS-Forge/AI-Based-Market-Research-Analyst",
         },
         ProjectItem {
-            title: "AI Exam Paper Analyzer",
+            title: "Automated AI-powered API Pentesting",
+            subtitle: "Security Automation Scanner",
+            tech: "TypeScript, OWASP API, security",
+            desc: "Dynamic penetration scanner mimicking cybersecurity attack scripts, scanning REST endpoints for injection flaws, and reporting CVE fixes.",
+            img: "public/projects/Agentium.png",
+            link: "https://github.com/RNS-Forge/Automated-AI-powered-API-Pentesting",
+        },
+        ProjectItem {
+            title: "RNS Exam Paper Analyzer",
             subtitle: "Academic Evaluation Tool",
-            tech: "Python, PyTorch, LangChain",
+            tech: "JavaScript, Vision APIs, PyTorch",
             desc: "Parses handwritten exam sheets, extracts answers using computer vision, and runs analysis against strict rubrics to cut manual grading time by 30%.",
-            img: "public/IMG/scholarship.png",
-            link: "https://github.com/RNS-Forge",
-        },
-        ProjectItem {
-            title: "Corporate Placement HUB",
-            subtitle: "Job Search Portal & Tracker",
-            tech: "Node.js, React, Express, MongoDB",
-            desc: "Coordinates student profiles and schedules recruiter rounds, displaying success analytics metrics and automated email dispatch templates.",
-            img: "public/IMG/placement.png",
-            link: "https://github.com/RNS-Forge",
+            img: "public/IMG/blog.png",
+            link: "https://github.com/RNS-Forge/RNS_Exam-Papper-Analyzer",
         },
     ];
 
@@ -279,7 +296,7 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
                 {
                     projects.into_iter().map(|p| {
                         html! {
-                            <div class={card_style.get_class_name().to_string()}>
+                            <a href={p.link} target="_blank" class={card_style.get_class_name().to_string()}>
                                 <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                                     <div style="height: 180px; width: 100%; overflow: hidden; border: 1px solid #18181b; margin-bottom: 0.5rem;">
                                         <img src={p.img} style="width: 100%; height: 100%; object-fit: cover;" />
@@ -298,11 +315,11 @@ pub fn projects_page(props: &ProjectsPageProps) -> Html {
                                     </p>
                                 </div>
                                 <div style="margin-top: 1rem; border-top: 1px dashed rgba(24, 24, 27, 0.25); padding-top: 0.75rem; text-align: right;">
-                                    <a href={p.link} target="_blank" style="font-family: 'Times New Roman', serif; font-size: 0.9rem; font-weight: bold; color: #B93C12; text-decoration: underline;">
+                                    <span style="font-family: 'Times New Roman', serif; font-size: 0.9rem; font-weight: bold; color: #B93C12; text-decoration: underline;">
                                         {"View Repository →"}
-                                    </a>
+                                    </span>
                                 </div>
-                            </div>
+                            </a>
                         }
                     }).collect::<Html>()
                 }
