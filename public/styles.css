@@ -45,12 +45,12 @@ html {
 
 @font-face {
   font-family: "Helvetica";
-  src: url("/public/assets/fonts/Helvetica.ttf");
+  src: url("public/assets/fonts/Helvetica.ttf");
 }
 
 @font-face {
   font-family: "Arial";
-  src: url("/public/assets/fonts/ARIAL.TTF");
+  src: url("public/assets/fonts/ARIAL.TTF");
 }
 
 /* Hide scrollbar */
